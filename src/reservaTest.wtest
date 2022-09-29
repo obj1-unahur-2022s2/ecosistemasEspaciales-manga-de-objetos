@@ -1,10 +1,95 @@
-
+import reservaNatural.*
+import especies.*
 describe "test de la reserva" {
 //probar cantidadTotalBiomasa(), habitatsDesequilibrados(), contieneEspecie(), especieEstaEnTodosLosHabitats() etc
-
+	const selva=new Habitat()
+	const desierto=new Habitat()
+	const jungla=new Habitat()
+	const leon=new EspecieFauna(pesoReferencia=100,coeficiente=40)
+	const tiburon=new EspecieFauna(pesoReferencia=800,coeficiente=80)
+	const aguila=new EspecieFauna(pesoReferencia=150,coeficiente=60)	
+	const carlos=new Animal(especie=leon,peso=130,formaLocomocion=correr)
+	const yogi=new Animal(especie=tiburon,peso=130,formaLocomocion=nadar)
+	const alcon=new Animal(especie=aguila,peso=310,formaLocomocion=volar)
+	const jorge=new Animal(especie=leon,peso=500,formaLocomocion=correr)
+	method initialize(){
+		selva.agregarSerVivo(carlos)
+		selva.agregarSerVivo(jorge)
+		desierto.agregarSerVivo(carlos)
+		desierto.agregarSerVivo(yogi)
+		jungla.agregarSerVivo(carlos)
+		jungla.agregarSerVivo(alcon)
+		reserva.agregarHabitat(selva)
+		reserva.agregarHabitat(desierto)
+		reserva.agregarHabitat(jungla)
+	}
+	test "habitat con mayor biomasa"{
+		assert.equals(reserva.habitadConMayorBiomasa(),selva)
+	}
+	test "biomasa total"{
+		assert.equals(reserva.biomasaTotal(),9328)
+	}
+	test "reserva no estan en equilibrio"{
+		assert.equals(reserva.habitatsNoEstanEnEquilibrio(),[selva,desierto,jungla])
+	}
+	test "esta en todos los habitats leon"{
+		assert.that(reserva.estaEnTodosLosHabitats(leon))
+	}
 }
 
 describe "test de habitats" {
 //probar totalBiomasa(), producirIncendio(), 	
-	
+	const selva=new Habitat()
+	const desierto=new Habitat()
+	const jungla=new Habitat()
+	const palmera= new EspecieFlora()
+	const leon=new EspecieFauna(pesoReferencia=100,coeficiente=40)
+	const tiburon=new EspecieFauna(pesoReferencia=800,coeficiente=80)
+	const aguila=new EspecieFauna(pesoReferencia=150,coeficiente=60)	
+	const carlos=new Animal(especie=leon,peso=130,formaLocomocion=correr)
+	const yogi=new Animal(especie=tiburon,peso=130,formaLocomocion=nadar)
+	const alcon=new Animal(especie=aguila,peso=310,formaLocomocion=volar)
+	const jorge=new Animal(especie=leon,peso=500,formaLocomocion=correr)
+	const palmera1=new Planta(especie=palmera,altura=8)
+	method initialize(){
+		selva.agregarSerVivo(carlos)
+		selva.agregarSerVivo(jorge)
+		desierto.agregarSerVivo(carlos)
+		desierto.agregarSerVivo(yogi)
+		jungla.agregarSerVivo(carlos)
+		jungla.agregarSerVivo(alcon)
+	}
+	test "biomasaTotal"{
+		assert.equals(selva.biomasaTotal(),6672)
+	}
+	test "cantidad de animales pequeños"{
+		assert.equals(desierto.cantidadDeEjemplaresPequenos(),1)
+	}
+	test "cantidad de animales grandes"{
+		assert.equals(selva.cantidadDeEjemplaresGrandes(),1)
+	}
+	test "hay animales medianos"{
+		assert.that(selva.hayAlgunMediano())
+	}
+	test "selva no esta en equilibrio"{
+		assert.notThat(selva.estaEnEquilibrio())
+	}
+	test "desierto  esta en equilibrio"{
+		desierto.agregarSerVivo(yogi)
+		desierto.agregarSerVivo(yogi)
+		assert.that(desierto.estaEnEquilibrio())
+	}
+	test "hay un leon en la selva"{
+		assert.that(selva.estaEnLaReserva(leon))
+	}
+	test "producir incendio animal"{
+		selva.sacarDeLaReserva(carlos)
+		selva.producirIncendio()
+		assert.notThat(selva.estaEnLaReserva(leon)) 
+	}
+	test "producir incendio planta"{
+		selva.agregarSerVivo(palmera1)
+		selva.producirIncendio()
+		assert.notThat(selva.estaEnLaReserva(palmera)) 
+	}
 }

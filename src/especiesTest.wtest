@@ -1,12 +1,94 @@
-
+import especies.*
 describe "tests de animales" {
 //probar los métodos biomasa(), peso(), consecuenciasDelIncendio, esGrande(),
 //esPequenio(), esMediano(), estaVivo(), etc
-	
+		const leon=new EspecieFauna(pesoReferencia=100,coeficiente=40)
+		const tiburon=new EspecieFauna(pesoReferencia=800,coeficiente=80)
+		const aguila=new EspecieFauna(pesoReferencia=150,coeficiente=60)	
+		const carlos=new Animal(especie=leon,peso=130,formaLocomocion=correr)
+		const yogi=new Animal(especie=tiburon,peso=130,formaLocomocion=nadar)
+		const alcon=new Animal(especie=aguila,peso=310,formaLocomocion=volar)
+		const jorge=new Animal(especie=leon,peso=500,formaLocomocion=correr)
+		method initialize(){}
 
+	test "biomasa Carlos"{
+		assert.equals(422,carlos.biomasa())
+	}
+	test "carlos no es Grande"{
+		assert.notThat(carlos.esGrande())
+	}
+	test"alcon es grande"{
+		assert.that(alcon.esGrande())
+	}
+	test "alcon no es pequeño"{
+		assert.notThat(alcon.esPequenio())
+	}
+	test "yogi es pequeño"{
+		assert.that(yogi.esPequenio())
+	}
+	test "yogi no  es mediano"{
+		assert.notThat(yogi.esMediano())
+	}
+	test "carlos es mediano"{
+		assert.that(carlos.esMediano())
+	}
+	test "carlos sobrevive al incendio"{
+		carlos.estarEnIncendio()
+		assert.that(carlos.estaVivo())
+	}
+	test "peso de carlos despues del incendio"{
+		carlos.estarEnIncendio()
+		assert.equals(carlos.peso(),117)
+	}
+	test "jorge no sobrevive al incendio"{
+		jorge.estarEnIncendio()
+		assert.notThat(jorge.estaVivo())
+	}
+	test "alcon sobrevive al incendio"{
+		alcon.estarEnIncendio()
+		assert.that(alcon.estaVivo())
+	}
+	test "yogi sobrevive al incendio"{
+		yogi.estarEnIncendio()
+		assert.that(yogi.estaVivo())
+	}
 }
 
 describe "tests de plantas" {
 //probar los métodos biomasa(), altura(), consecuenciasDelIncendio, esGrande(),
 //esPequenio(), estaVivo() etc
+	const palmera= new EspecieFlora()
+	const palmera1=new Planta(especie=palmera,altura=8)
+	const palmera2=new Planta(especie=palmera,altura=16)
+	
+	test "biomasa de palmera 1"{
+		assert.equals(palmera1.biomasa(),16)
+	}
+	test "palmera1 no es grande"{
+		assert.notThat(palmera1.esGrande())
+	}
+	test "palmera2 es grande"{
+		assert.that(palmera2.esGrande())
+	}
+	test "palmera1 es pequeña"{
+		assert.that(palmera1.esPequenio())
+	}
+	test "palmera2 no es pequeña"{
+		assert.notThat(palmera2.esPequenio())
+	}
+	test "palmera1 no es mediana"{
+		assert.notThat(palmera1.esMediano())
+	}
+	test "palmera1 no sobrevive al incendio"{
+		palmera1.estarEnIncendio()
+		assert.notThat(palmera1.estaVivo())
+	}
+	test "palmera2  sobrevive al incendio"{
+		palmera2.estarEnIncendio()
+		assert.that(palmera2.estaVivo())
+	}
+	test "palmera2  pierde altura en el incendio"{
+		palmera2.estarEnIncendio()
+		assert.equals(palmera2.altura(),11)
+	}
 }
